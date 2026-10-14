@@ -33,6 +33,9 @@ impl crate::state::BattleState {
             if self.ecs_get::<Health>(id).map(|h| h.dead).unwrap_or(true) {
                 continue;
             }
+            if self.ecs_get::<ProductionQueue>(id).is_none_or(|q| q.item.is_none() && q.defense_item.is_none()) {
+                continue;
+            }
             let tick = self.tick;
             let low_power = self
                 .ecs_get::<Owner>(id)
@@ -161,12 +164,11 @@ impl crate::state::BattleState {
             TechnoClass::Building => return,
         };
         let techno_class = tt.class;
-        let promoted =
-            self.players.iter().find(|p| p.house_id == Some(owner_id)).is_some_and(|p| match tt.class {
-                TechnoClass::Infantry => p.promoted_infantry,
-                TechnoClass::Vehicle => p.promoted_vehicle,
-                _ => false,
-            });
+        let promoted = self.players.iter().find(|p| p.house_id == Some(owner_id)).is_some_and(|p| match tt.class {
+            TechnoClass::Infantry => p.promoted_infantry,
+            TechnoClass::Vehicle => p.promoted_vehicle,
+            _ => false,
+        });
         let base_health = tt.strength.max(1);
         let max_health =
             if promoted { base_health.saturating_mul(5).saturating_div(4).max(base_health.saturating_add(1)) } else { base_health };

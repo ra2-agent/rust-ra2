@@ -46,6 +46,9 @@ jobs:
       - name: Tests
         run: cargo test --release --workspace
 
+      - name: Arena profiling tests
+        run: cargo test --release -p ra-engine -p ra-arena --features ra-arena/profiling
+
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:

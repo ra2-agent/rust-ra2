@@ -71,6 +71,8 @@ world.apply(commands);
 assert!(!world.contains(entity));
 ```
 
+同一组件要批量读取时，先创建 `world.view::<Health>()`，再按内部实体句柄调用 `view.get(entity)`。视图只定位一次组件存储，避免对每个实体重复计算类型哈希、查找存储并做类型转换；创建视图不分配内存。它与 `world.get` 使用同样的存活、世代和组件句柄检查。视图借用世界期间不能修改或销毁实体，也不会改变遍历顺序。引擎的全量 ECS 投影和状态摘要已经使用这一接口。
+
 推荐在 `ra-engine` 中的用法：
 
 1. 维护 `EntityId → EcsEntity` 映射表；

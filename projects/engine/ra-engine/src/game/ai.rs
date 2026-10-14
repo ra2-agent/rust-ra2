@@ -12,50 +12,16 @@ impl BattleSession {
     /// `Hard`：每 tick 完整下发，并追加一轮生产尝试（仍受上述节流约束）。
     pub(super) fn push_ai_commands(&mut self) {
         let local_house = self.world.players.iter().find(|p| p.id == self.world.local_player).map(|p| p.house.clone());
-        let opponents: Vec<(ra_types::PlayerId, std::sync::Arc<str>)> = self
+        let opponents: Vec<ra_types::PlayerId> = self
             .world
             .players
             .iter()
             .filter(|p| !crate::gameplay::ai::is_ambient_house(p.house.as_ref()))
             .filter(|p| local_house.as_ref().map(|h| p.house.as_ref() != h.as_ref()).unwrap_or(true))
-            .map(|p| (p.id, p.house.clone()))
+            .map(|p| p.id)
             .collect();
-        let skip_offensive = difficulty_skips_offensive(&self.difficulty, self.world.tick);
-        let hard_extra_produce = difficulty_extra_produce(&self.difficulty);
-        for (player, house) in &opponents {
-            let house = house.as_ref();
-            // 战役未触发「Production Begins」的房主不产、不自动进攻。
-            if !self.world.house_production_begun(house) {
-                continue;
-            }
-            let mut cmds = Vec::new();
-            cmds.extend(crate::gameplay::ai::deploy_mcv_commands(&self.world, house));
-            cmds.extend(crate::gameplay::ai::place_power_commands(&self.world, house, *player));
-            cmds.extend(crate::gameplay::ai::place_refinery_commands(&self.world, house, *player));
-
-            let ai_trigger_army = crate::gameplay::ai::house_army_driven_by_ai_triggers(&self.world, house);
-            if ai_trigger_army {
-                // 产队 / 脚本路径负责作战单位，启发式不再造兵营车厂与量产。
-                for cmd in cmds {
-                    self.world.push_player_command(*player, cmd);
-                }
-                continue;
-            }
-
-            cmds.extend(crate::gameplay::ai::place_barracks_commands(&self.world, house, *player));
-            cmds.extend(crate::gameplay::ai::place_war_factory_commands(&self.world, house, *player));
-            if !skip_offensive {
-                if crate::gameplay::ai::heuristic_should_produce_army(&self.world, house) {
-                    cmds.extend(crate::gameplay::ai::produce_infantry_commands(&self.world, house, *player));
-                    cmds.extend(crate::gameplay::ai::produce_vehicle_commands(&self.world, house, *player));
-                    if hard_extra_produce {
-                        cmds.extend(crate::gameplay::ai::produce_infantry_commands(&self.world, house, *player));
-                        cmds.extend(crate::gameplay::ai::produce_vehicle_commands(&self.world, house, *player));
-                    }
-                }
-                cmds.extend(crate::gameplay::ai::auto_attack_commands(&self.world, house));
-            }
-            for cmd in cmds {
+        for player in &opponents {
+            for cmd in crate::heuristic_ai_commands(&self.world, *player, &self.difficulty) {
                 self.world.push_player_command(*player, cmd);
             }
         }

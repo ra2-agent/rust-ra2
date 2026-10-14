@@ -1,0 +1,17 @@
+{
+    "npcs": ["candidate", "hard-baseline-v1", "reference-v4", "reference-v5", "reference-v7", "counter-retreat-v1"],
+    "scenarios": ["duel-v1", "skirmish-v1", "economy-v1"],
+    "rounds": 4,
+    "seed": 42,
+    "max_ticks": 3000,
+    "max_commands_per_tick": 64,
+    "trace": false,
+    "jobs": 4,
+    "summary_only": false,
+    "elo": {
+        "initial": 1500,
+        "k": 32,
+        "scale": 400,
+        "provisional_games": 20
+    }
+}

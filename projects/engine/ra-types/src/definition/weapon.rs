@@ -145,7 +145,7 @@ impl WeaponDefinitions {
 
     /// 按键查找（大小写不敏感）。
     pub fn get(&self, type_key: &str) -> Option<&WeaponDefinition> {
-        self.by_key.get(&WeaponName::parse(type_key))
+        self.by_key.get(super::ini_string::lookup_upper(type_key).as_ref())
     }
 
     /// 按已规范化的武器键查找。

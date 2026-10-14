@@ -117,3 +117,30 @@ fn entity_handle_is_copy() {
     let f = e;
     assert_eq!(e, f);
 }
+
+#[test]
+fn component_view_checks_missing_components_dense_moves_and_reused_generations() {
+    let mut world = EcsWorld::new();
+    let a = world.spawn();
+    let b = world.spawn();
+    let c = world.spawn();
+    world.insert(a, Health(10));
+    world.insert(c, Health(30));
+    {
+        let view = world.view::<Health>();
+        assert_eq!(view.get(a), Some(&Health(10)));
+        assert_eq!(view.get(c), Some(&Health(30)));
+        assert_eq!(view.get(b), None);
+        assert_eq!(view.get(EcsEntity { slot: u32::MAX, generation: 1 }), None);
+        assert_eq!(world.view::<Label>().get(a), None);
+    }
+    world.remove::<Health>(a);
+    assert_eq!(world.view::<Health>().get(c), Some(&Health(30)));
+    world.despawn(c);
+    let replacement = world.spawn();
+    world.insert(replacement, Health(40));
+    let view = world.view::<Health>();
+    assert_eq!(view.get(c), None);
+    assert_eq!(view.get(a), None);
+    assert_eq!(view.get(replacement), Some(&Health(40)));
+}

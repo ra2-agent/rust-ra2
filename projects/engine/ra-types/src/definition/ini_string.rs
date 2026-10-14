@@ -2,13 +2,19 @@
 //!
 //! 各子系统的 `*Name` 类型内聚在各自模块；此处不存放任何 Name 类型。
 
-use std::fmt;
+use std::{borrow::Cow, fmt};
 
 use serde::de::{self, Deserializer, Visitor};
 
 /// trim + ASCII 大写。
 pub(super) fn parse_upper(raw: &str) -> String {
     raw.trim().to_ascii_uppercase()
+}
+
+/// 查询键沿用已规范化的借用；只有 ASCII 小写输入需要新字符串。
+pub(super) fn lookup_upper(raw: &str) -> Cow<'_, str> {
+    let key = raw.trim();
+    if key.bytes().any(|byte| byte.is_ascii_lowercase()) { Cow::Owned(key.to_ascii_uppercase()) } else { Cow::Borrowed(key) }
 }
 
 /// 从标量字符串反序列化为大写键；缺省 / unit → 空串。

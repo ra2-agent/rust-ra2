@@ -1,0 +1,33 @@
+name: Agent engine
+
+on:
+  push:
+    branches: [ra2-agent]
+  pull_request:
+    branches: [ra2-agent]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: engine-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: engine-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
+      - name: Engine, Agent interface and replay regressions
+        run: cargo test --locked -p ra-ecs -p ra-types -p ra-adaptor -p ra-engine -p ra-testing -p ra-arena
+      - name: Profiling feature regressions
+        run: cargo test --locked -p ra-engine -p ra-arena --features ra-arena/profiling
+      - name: NPC report and comparison tests
+        run: node --test scripts/npc/report.test.mjs

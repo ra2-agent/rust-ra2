@@ -11,7 +11,7 @@ mod world;
 
 pub use commands::EcsCommandBuffer;
 pub use entity::EcsEntity;
-pub use world::EcsWorld;
+pub use world::{ComponentView, EcsWorld};
 
 /// 可放入 [`EcsWorld`] 的组件标记。
 ///

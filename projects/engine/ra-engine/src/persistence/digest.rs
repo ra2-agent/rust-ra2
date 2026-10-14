@@ -13,6 +13,8 @@ use ra_types::ScheduledCommand;
 
 impl BattleState {
     pub(crate) fn rehash(&mut self) {
+        #[cfg(feature = "profiling")]
+        let _timer = crate::profiling::span(crate::profiling::Stage::StateHash);
         let mut h = self.tick;
         h = h.wrapping_mul(1099511628211).wrapping_add(self.edition.as_str().len() as u64);
         h = h.wrapping_mul(1099511628211).wrapping_add(self.entities.len() as u64);
@@ -20,25 +22,43 @@ impl BattleState {
         for cmd in &self.last_input_frame.commands {
             h = hash_scheduled(h, cmd);
         }
-        let ids: Vec<_> = self.entities.iter().map(|e| e.id).collect();
-        for id in ids {
-            let xf = self.ecs_get::<Transform>(id).copied();
-            let health = self.ecs_get::<Health>(id).copied();
-            let loco = self.ecs_get::<Locomotor>(id).copied();
-            let attack = self.ecs_get::<AttackState>(id).copied();
-            let anim = self.ecs_get::<AnimationState>(id).copied();
-            let harvester = self.ecs_get::<HarvesterState>(id).copied();
-            let armor = self.ecs_get::<CombatStats>(id).map(|s| s.armor).unwrap_or_default();
-            let attack_verses = self.ecs_get::<CombatStats>(id).map(|s| s.attack_verses).unwrap_or([0; 11]);
-            let attack_range = self.ecs_get::<CombatStats>(id).map(|s| s.attack_range).unwrap_or(0);
-            let attack_damage = self.ecs_get::<CombatStats>(id).map(|s| s.attack_damage).unwrap_or(0);
-            let attack_cooldown_max = self.ecs_get::<CombatStats>(id).map(|s| s.attack_cooldown_max).unwrap_or(0);
-            let produce_item = self.ecs_get::<ProductionQueue>(id).and_then(|p| p.item.clone());
-            let produce_ready = self.ecs_get::<ProductionQueue>(id).and_then(|p| p.ready.clone());
-            let rally_x = self.ecs_get::<ProductionQueue>(id).and_then(|p| p.rally_x);
-            let rally_y = self.ecs_get::<ProductionQueue>(id).and_then(|p| p.rally_y);
-            let type_id = self.ecs_get::<Identity>(id).map(|i| i.type_id);
-            let owner = self.ecs_get::<Owner>(id).map(|o| o.house);
+        let transforms = self.ecs.world().view::<Transform>();
+        let healths = self.ecs.world().view::<Health>();
+        let locomotors = self.ecs.world().view::<Locomotor>();
+        let attacks = self.ecs.world().view::<AttackState>();
+        let animations = self.ecs.world().view::<AnimationState>();
+        let harvesters = self.ecs.world().view::<HarvesterState>();
+        let combat_stats = self.ecs.world().view::<CombatStats>();
+        let queues = self.ecs.world().view::<ProductionQueue>();
+        let identities = self.ecs.world().view::<Identity>();
+        let owners = self.ecs.world().view::<Owner>();
+        for entity in &self.entities {
+            let id = entity.id;
+            let handle = self.ecs.resolve(id);
+            macro_rules! get {
+                ($view:ident) => {
+                    handle.and_then(|h| $view.get(h))
+                };
+            }
+            let xf = get!(transforms).copied();
+            let health = get!(healths).copied();
+            let loco = get!(locomotors).copied();
+            let attack = get!(attacks).copied();
+            let anim = get!(animations).copied();
+            let harvester = get!(harvesters).copied();
+            let stats = get!(combat_stats);
+            let armor = stats.map(|s| s.armor).unwrap_or_default();
+            let attack_verses = stats.map(|s| s.attack_verses).unwrap_or([0; 11]);
+            let attack_range = stats.map(|s| s.attack_range).unwrap_or(0);
+            let attack_damage = stats.map(|s| s.attack_damage).unwrap_or(0);
+            let attack_cooldown_max = stats.map(|s| s.attack_cooldown_max).unwrap_or(0);
+            let queue = get!(queues);
+            let produce_item = queue.and_then(|p| p.item);
+            let produce_ready = queue.and_then(|p| p.ready);
+            let rally_x = queue.and_then(|p| p.rally_x);
+            let rally_y = queue.and_then(|p| p.rally_y);
+            let type_id = get!(identities).map(|i| i.type_id);
+            let owner = get!(owners).map(|o| o.house);
 
             let x = xf.map(|t| t.x).unwrap_or(0);
             let y = xf.map(|t| t.y).unwrap_or(0);

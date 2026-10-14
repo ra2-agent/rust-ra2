@@ -11,7 +11,7 @@ time-travel.*
 
 # Rust
 target/
-Cargo.lock
+arena-results/
 
 # Node
 node_modules/
@@ -48,3 +48,7 @@ _tmp_*
 # 澹抽〉楠屾敹鎴浘锛團12 / 鑷姩娴嬭瘯 dump锛屽嬁鎻愪氦锛?
 screenshots/
 **/screenshots/
+
+# Local credentials and personal configuration
+.env
+.env.*

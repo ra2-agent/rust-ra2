@@ -196,13 +196,23 @@ impl BattleSession {
 
     /// 推进恰好一个仿真 tick（由 `Session` 时钟驱动；阶段顺序来自 `runtime.schedule`）。
     pub fn advance_one_tick(&mut self, runtime: &EngineRuntime<'_>) {
+        #[cfg(feature = "profiling")]
+        crate::profiling::begin_tick(self.world.tick.wrapping_add(1));
         let skirmish = matches!(self.boot_kind, SessionBootKind::Skirmish);
-        self.world.ai_trigger_runtime.sync_session_hints(&self.difficulty, skirmish);
+        {
+            #[cfg(feature = "profiling")]
+            let _timer = crate::profiling::span(crate::profiling::Stage::SessionHints);
+            self.world.ai_trigger_runtime.sync_session_hints(&self.difficulty, skirmish);
+        }
         // 遭遇战靠 `ai_enabled`；战役在某 house「Production Begins」后也会推 AI（仅已开生产的房主）。
-        if self.ai_enabled || self.world.any_house_production_begun() {
+        if self.ai_enabled || (!skirmish && self.world.any_house_production_begun()) {
+            #[cfg(feature = "profiling")]
+            let _timer = crate::profiling::span(crate::profiling::Stage::AutomaticAi);
             self.push_ai_commands();
         }
         self.world.advance_scheduled_tick(runtime.schedule);
+        #[cfg(feature = "profiling")]
+        let _timer = crate::profiling::span(crate::profiling::Stage::Outcome);
         self.refresh_outcome();
     }
 }

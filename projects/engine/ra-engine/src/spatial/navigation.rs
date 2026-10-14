@@ -110,6 +110,8 @@ impl crate::state::BattleState {
 
     /// 根据 ECS 坐标与目的地计算路径（不写入实体）。
     pub fn compute_repath_at(&self, i: usize) -> Vec<(u16, u16)> {
+        #[cfg(feature = "profiling")]
+        let _timer = crate::profiling::span(crate::profiling::Stage::Pathfinding);
         let id = self.entities[i].id;
         let (Some(tx), Some(ty)) = self.ecs_get::<MovementState>(id).map(|m| (m.destination_x, m.destination_y)).unwrap_or((None, None))
         else {
@@ -273,7 +275,7 @@ impl crate::state::BattleState {
                     }
                 }
             }
-            let Some(movement) = self.ecs_get::<MovementState>(id).cloned()
+            let Some(movement) = self.ecs_get::<MovementState>(id)
             else {
                 continue;
             };

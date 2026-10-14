@@ -55,6 +55,16 @@ pub struct PlayerBattleStats {
 }
 
 impl BattleSession {
+    /// 当前时刻的统计；未终局和超时比赛也可使用，与游戏结算共用积分公式。
+    pub fn current_battle_stats(&self) -> BattleStats {
+        self.compute_battle_stats()
+    }
+
+    /// 按本局短局 / 长局规则判断指定阵营是否仍保活，供观战与 NPC 评测使用。
+    pub fn house_keeps_alive(&self, house: &str) -> bool {
+        house_keeps_alive(&self.world, house, self.short_game)
+    }
+
     /// 遭遇战：若仅剩一个阵营仍保活，进入 `SavourDelay` 收束后再锁定。
     /// 战役：消费触发器 `pending_outcome`，同样可走收束窗。
     pub(super) fn refresh_outcome(&mut self) {
@@ -205,24 +215,37 @@ impl BattleSession {
     /// 至少需要两名非氛围玩家槽位，避免单机装载尚未开战时误判胜负。
     /// 短局：存活建筑或 `[General] BaseUnit` 保活。长局：任意存活建筑 / 步兵 / 载具 / 飞行器保活。
     pub fn sole_victor(&self) -> Option<&str> {
-        let contenders: Vec<&str> =
-            self.world.players.iter().filter(|p| !is_ambient_house(p.house.as_ref())).map(|p| p.house.as_ref()).collect();
-        if contenders.len() < 2 {
-            return None;
+        let mut contenders = 0;
+        let mut survivor = None;
+        for player in &self.world.players {
+            let house = player.house.as_ref();
+            if is_ambient_house(house) {
+                continue;
+            }
+            contenders += 1;
+            if house_keeps_alive(&self.world, house, self.short_game) {
+                if survivor.is_some() {
+                    return None;
+                }
+                survivor = Some(house);
+            }
         }
-        let alive: Vec<&str> = contenders.into_iter().filter(|house| house_keeps_alive(&self.world, house, self.short_game)).collect();
-        if alive.len() == 1 { Some(alive[0]) } else { None }
+        if contenders >= 2 { survivor } else { None }
     }
 }
 
 /// 该 house 是否仍保活（未出局）。
 fn house_keeps_alive(world: &BattleState, house: &str, short_game: bool) -> bool {
+    let Some(house_id) = crate::gameplay::house_id_of(&world.definitions, house)
+    else {
+        return false;
+    };
     for e in &world.entities {
         let id = e.id;
         if world.ecs_get::<Health>(id).map(|h| h.dead).unwrap_or(true) {
             continue;
         }
-        if !world.ecs_get::<Owner>(id).map(|o| crate::gameplay::house_id_of(&world.definitions, house) == Some(o.house)).unwrap_or(false) {
+        if !world.ecs_get::<Owner>(id).map(|o| house_id == o.house).unwrap_or(false) {
             continue;
         }
         let Some(identity) = world.ecs_get::<Identity>(id)

@@ -5,6 +5,7 @@ mod battle_sfx;
 pub(crate) mod components;
 mod ecs_registry;
 mod entities;
+mod entity_projection;
 mod eva;
 mod players;
 mod resources;

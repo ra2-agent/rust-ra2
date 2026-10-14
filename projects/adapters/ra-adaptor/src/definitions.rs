@@ -113,7 +113,10 @@ pub fn build_runtime_definitions(rules: &RulesSystem) -> RaResult<RuntimeDefinit
     // FreeUnit 目标可能后于建筑入库（与 DeploysInto 同理），第二遍再绑 TypeId。
     let mut pending_free_units: Vec<(TechnoName, TechnoName)> = Vec::new();
 
-    for tt in rules.techno_types.iter() {
+    // 注册表内部为 HashMap；冻结 TypeId 与武器分配不能依赖进程随机迭代序。
+    let mut techno_types: Vec<_> = rules.techno_types.iter().collect();
+    techno_types.sort_unstable_by(|a, b| a.id.as_str().cmp(b.id.as_str()));
+    for tt in techno_types {
         let key = tt.id.clone();
         let class = match tt.kind {
             TechnoKind::Infantry => TechnoClass::Infantry,

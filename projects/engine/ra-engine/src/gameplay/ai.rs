@@ -16,6 +16,42 @@ use crate::{
 use ra_map::MapEntityKind;
 use ra_types::{PlayerId, ProductionCategory, TechnoCategory};
 
+/// 为指定玩家生成一拍内置启发式 AI 命令；不修改世界，也不依赖本地玩家席位。
+///
+/// 遭遇战与无窗口 NPC 评测共用此入口。`difficulty` 接受 Easy / Normal / Hard；
+/// AITrigger 覆盖的房主只补经济基建，军队仍交给地图脚本。
+pub fn heuristic_ai_commands(world: &BattleState, player: PlayerId, difficulty: &str) -> Vec<GameCommand> {
+    let Some(state) = world.players.iter().find(|p| p.id == player)
+    else {
+        return Vec::new();
+    };
+    let house = state.house.as_ref();
+    if is_ambient_house(house) || !world.house_production_begun(house) {
+        return Vec::new();
+    }
+    let mut cmds = Vec::new();
+    cmds.extend(deploy_mcv_commands(world, house));
+    cmds.extend(place_power_commands(world, house, player));
+    cmds.extend(place_refinery_commands(world, house, player));
+    if house_army_driven_by_ai_triggers(world, house) {
+        return cmds;
+    }
+    cmds.extend(place_barracks_commands(world, house, player));
+    cmds.extend(place_war_factory_commands(world, house, player));
+    if !crate::difficulty_skips_offensive(difficulty, world.tick) {
+        if heuristic_should_produce_army(world, house) {
+            cmds.extend(produce_infantry_commands(world, house, player));
+            cmds.extend(produce_vehicle_commands(world, house, player));
+            if crate::difficulty_extra_produce(difficulty) {
+                cmds.extend(produce_infantry_commands(world, house, player));
+                cmds.extend(produce_vehicle_commands(world, house, player));
+            }
+        }
+        cmds.extend(auto_attack_commands(world, house));
+    }
+    cmds
+}
+
 /// 启发式量产：同房主存活机动作战单位上限（达到后停刷）。
 const HEURISTIC_ARMY_CAP: usize = 8;
 /// 启发式量产：首批单位之后的下单间隔（逻辑 tick）。

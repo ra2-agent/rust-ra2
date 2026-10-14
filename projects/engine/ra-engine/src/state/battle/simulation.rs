@@ -13,52 +13,67 @@ impl BattleState {
     pub fn advance_scheduled_tick(&mut self, schedule: &crate::engine::SystemSchedule) {
         use crate::engine::SystemPhase;
 
-        self.tick = self.tick.wrapping_add(1);
-        let mut due = Vec::new();
-        let mut deferred = Vec::new();
-        for cmd in std::mem::take(&mut self.pending_commands) {
-            if cmd.tick.0 <= self.tick {
-                due.push(cmd);
-            }
-            else {
-                deferred.push(cmd);
-            }
+        #[cfg(feature = "profiling")]
+        crate::profiling::begin_tick(self.tick.wrapping_add(1));
+        #[cfg(feature = "profiling")]
+        let _tick_timer = crate::profiling::span(crate::profiling::Stage::EngineTick);
+        macro_rules! timed {
+            ($stage:ident, $work:expr) => {{
+                #[cfg(feature = "profiling")]
+                let _timer = crate::profiling::span(crate::profiling::Stage::$stage);
+                $work
+            }};
         }
-        self.pending_commands = deferred;
-        self.last_input_frame = InputFrame { tick: self.tick, commands: due.clone() };
-        self.last_rejects.clear();
+
+        let due = timed!(CommandQueue, {
+            self.tick = self.tick.wrapping_add(1);
+            let mut due = Vec::new();
+            let mut deferred = Vec::new();
+            for cmd in std::mem::take(&mut self.pending_commands) {
+                if cmd.tick.0 <= self.tick {
+                    due.push(cmd);
+                }
+                else {
+                    deferred.push(cmd);
+                }
+            }
+            self.pending_commands = deferred;
+            self.last_input_frame = InputFrame { tick: self.tick, commands: due.clone() };
+            self.last_rejects.clear();
+            due
+        });
         for phase in &schedule.phases {
             match *phase {
-                SystemPhase::ApplyCommands => self.apply_commands(&due),
+                SystemPhase::ApplyCommands => timed!(ApplyCommands, self.apply_commands(&due)),
                 SystemPhase::Movement => {
-                    self.resolve_follow();
-                    self.advance_movement();
+                    timed!(Follow, self.resolve_follow());
+                    timed!(Movement, self.advance_movement());
                 }
-                SystemPhase::HitFlash => self.tick_hit_flash(),
+                SystemPhase::HitFlash => timed!(HitFlash, self.tick_hit_flash()),
                 SystemPhase::Combat => {
-                    self.resolve_combat();
-                    self.resolve_infiltrate();
-                    self.resolve_capture_building();
-                    self.tick_power_blackouts();
+                    timed!(Combat, self.resolve_combat());
+                    timed!(Infiltrate, self.resolve_infiltrate());
+                    timed!(CaptureBuilding, self.resolve_capture_building());
+                    timed!(Blackouts, self.tick_power_blackouts());
                 }
-                SystemPhase::Turrets => self.advance_turrets(),
-                SystemPhase::RefineryIncome => self.advance_refinery_income(),
+                SystemPhase::Turrets => timed!(Turrets, self.advance_turrets()),
+                SystemPhase::RefineryIncome => timed!(RefineryIncome, self.advance_refinery_income()),
                 SystemPhase::Production => {
-                    self.advance_production();
-                    crate::gameplay::tick_repairs(self);
-                    self.tick_eva_funds_nag();
+                    timed!(Production, self.advance_production());
+                    timed!(Repairs, crate::gameplay::tick_repairs(self));
+                    timed!(EvaAdvice, self.tick_eva_funds_nag());
                 }
                 SystemPhase::Powers => {
-                    crate::gameplay::tick_super_weapon_charges(self);
-                    crate::gameplay::tick_lightning_storm(self);
+                    timed!(SuperWeapons, crate::gameplay::tick_super_weapon_charges(self));
+                    timed!(LightningStorm, crate::gameplay::tick_lightning_storm(self));
                 }
-                SystemPhase::TerrainSpawn => self.advance_terrain_spawners(),
+                SystemPhase::TerrainSpawn => timed!(TerrainSpawn, self.advance_terrain_spawners()),
                 SystemPhase::Triggers => {
-                    crate::gameplay::tick_triggers(self);
-                    crate::gameplay::tick_ai_triggers(self);
-                    crate::gameplay::flush_pending_team_spawns(self);
-                    crate::gameplay::tick_script_teams(self);
-                    crate::gameplay::tick_script_crates(self);
+                    timed!(MapTriggers, crate::gameplay::tick_triggers(self));
+                    timed!(AiTriggers, crate::gameplay::tick_ai_triggers(self));
+                    timed!(TeamSpawns, crate::gameplay::flush_pending_team_spawns(self));
+                    timed!(TeamScripts, crate::gameplay::tick_script_teams(self));
+                    timed!(ScriptCrates, crate::gameplay::tick_script_crates(self));
                 }
                 SystemPhase::Rehash => {
                     self.sync_ecs_components();

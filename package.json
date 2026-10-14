@@ -13,6 +13,7 @@
         "build:ts": "pnpm --filter @game-gpt/red-alert2 run build",
         "build": "pnpm run build:wasm && pnpm run build:ts && pnpm run build:napi",
         "test": "cargo test --release --workspace",
+        "npc:test": "node scripts/npc-test.mjs",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "fmt": "biome format --write . && cargo fmt --all",
@@ -21,11 +22,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/rust-alert/ra2.exe.git"
+        "url": "https://github.com/ra2-agent/rust-ra2.git"
     },
-    "homepage": "https://github.com/rust-alert/ra2.exe",
+    "homepage": "https://github.com/ra2-agent/rust-ra2",
     "bugs": {
-        "url": "https://github.com/rust-alert/ra2.exe/issues"
+        "url": "https://github.com/ra2-agent/rust-ra2/issues"
     },
     "license": "Apache-2.0",
     "devDependencies": {

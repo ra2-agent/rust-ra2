@@ -101,7 +101,9 @@ impl crate::state::BattleState {
         }
         for (house, amount) in deliveries {
             if let Some(player) = self.players.iter_mut().find(|p| p.house.as_ref() == house.as_ref()) {
+                let before = player.funds;
                 player.funds = player.funds.saturating_add(amount);
+                player.harvested_credits = player.harvested_credits.saturating_add((i64::from(player.funds) - i64::from(before)) as u64);
             }
         }
         for (index, id, tx, ty) in auto_moves {

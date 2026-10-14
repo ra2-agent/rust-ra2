@@ -68,6 +68,7 @@ fn harvester_on_ore_delivers_at_adjacent_refinery() {
     // 邻接矿场：下一 tick 卸货入账。
     world.advance_tick();
     assert_eq!(world.house_funds("AMERICANS"), Some(1_000 + ORE_INCOME_PER_TRIP as i32));
+    assert_eq!(world.players[0].harvested_credits, u64::from(ORE_INCOME_PER_TRIP));
 
     for _ in 0..(ORE_TRIP_TICKS - 1) {
         world.advance_tick();
@@ -79,6 +80,24 @@ fn harvester_on_ore_delivers_at_adjacent_refinery() {
     assert_eq!(world.house_funds("AMERICANS"), Some(1_000 + ORE_INCOME_PER_TRIP as i32));
     world.advance_tick();
     assert_eq!(world.house_funds("AMERICANS"), Some(1_000 + 2 * ORE_INCOME_PER_TRIP as i32));
+    assert_eq!(world.players[0].harvested_credits, 2 * u64::from(ORE_INCOME_PER_TRIP));
+}
+
+#[test]
+fn harvest_telemetry_counts_only_actual_receipts_and_preserves_game_hash() {
+    let mut world = mining_world();
+    world.set_house_funds("AMERICANS", i32::MAX - 3);
+    assert_eq!(world.players[0].harvested_credits, 0, "initial funds are not mining income");
+    for _ in 0..=ORE_TRIP_TICKS {
+        world.advance_tick();
+    }
+    assert_eq!(world.house_funds("AMERICANS"), Some(i32::MAX));
+    assert_eq!(world.players[0].harvested_credits, 3, "count actual receipt when balance saturates");
+    let mut without_telemetry = world.clone();
+    without_telemetry.players[0].harvested_credits = 0;
+    world.advance_tick();
+    without_telemetry.advance_tick();
+    assert_eq!(world.state_hash(), without_telemetry.state_hash(), "observational telemetry does not change game state hashes");
 }
 
 #[test]

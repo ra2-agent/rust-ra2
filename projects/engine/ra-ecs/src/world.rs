@@ -17,6 +17,24 @@ pub struct EcsWorld {
     alive_count: u32,
 }
 
+/// 一次定位组件存储的只读视图；批量读取时免去逐实体的类型哈希查询。
+///
+/// 借用期间世界不可变；读取仍验证实体存活、世代和组件所属句柄。
+pub struct ComponentView<'a, T> {
+    world: &'a EcsWorld,
+    store: Option<&'a ComponentStore<T>>,
+}
+
+impl<T: Component> ComponentView<'_, T> {
+    /// 按句柄读取组件；无效实体或缺少组件时返回 `None`。
+    pub fn get(&self, entity: EcsEntity) -> Option<&T> {
+        if !self.world.contains(entity) {
+            return None;
+        }
+        self.store?.get(entity)
+    }
+}
+
 impl std::fmt::Debug for EcsWorld {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("EcsWorld")
@@ -123,6 +141,11 @@ impl EcsWorld {
             return None;
         }
         self.store::<T>()?.get(entity)
+    }
+
+    /// 为批量只读查询定位一次组件存储，不分配内存。
+    pub fn view<T: Component>(&self) -> ComponentView<'_, T> {
+        ComponentView { world: self, store: self.store::<T>() }
     }
 
     /// 可变取组件。

@@ -1,0 +1,23 @@
+[package]
+name = "ra-arena"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "无窗口 NPC 对战、镜像循环赛与 Elo 评测"
+publish = false
+
+[dependencies]
+ra-types.workspace = true
+ra-engine.workspace = true
+ra-map.workspace = true
+ra-adaptor.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+ra-testing.workspace = true
+
+[features]
+profiling = ["ra-engine/profiling"]

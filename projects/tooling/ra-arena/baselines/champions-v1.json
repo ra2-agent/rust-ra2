@@ -1,0 +1,24 @@
+{
+    "id": "ra-npc-champions-v1",
+    "captured_on": "2026-10-14",
+    "active_candidate": "reference-v7 equivalent, variant 24",
+    "versions": {
+        "reference-v1": "local focus fire",
+        "reference-v2": "homogeneous vehicle coordination",
+        "reference-v3": "budget, continuous production and queue cap",
+        "reference-v4": "ore-aware refinery placement",
+        "reference-v5": "range kiting and threat efficiency; frozen variant 16",
+        "reference-v6": "economy-dependent forward factories; frozen variant 23",
+        "reference-v7": "mixed-army wounded retreat; frozen variant 24",
+        "counter-retreat-v1": "unconditional wounded retreat; reference_v5 frozen variant 21"
+    },
+    "files": {
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v1.rs": "7928f4ada4124600576dd8f6a948d5933aca677fa3b98e7a0b5fee2c93bf592d",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v2.rs": "54ab1822d9a25a4e8cdf50a0e606887b32c4871aac5c7a855c2d30d2b62506d2",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v3.rs": "5165f9251777198ff5c9f4b3de242393613bd17f7633f73680e6399b2af397d4",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v4.rs": "0fd3e735a030439946306d106ae5b75a55abc92a107e19d8cd5743d41c65c6a8",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v5.rs": "fefb1b2dcd1519efcb4fac3ea846ff25f125f5bb0268e52fc4b5346cd3e247e5",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v6.rs": "3b07dc5f4b81bb0caa68b0ec84e56fd5d5b03bccb7f56dfe5c20f9ef07f7c2a3",
+        "projects/engine/ra-engine/src/gameplay/npc/reference_v7.rs": "f307ffb0322db258b970205f6c2e0571dec5a0a79caab6084b6ff8f17f201620"
+    }
+}

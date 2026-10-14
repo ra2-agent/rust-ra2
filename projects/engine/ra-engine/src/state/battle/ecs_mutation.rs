@@ -1,4 +1,10 @@
-use super::{super::entities::WorldEntity, types::BattleState};
+use super::{
+    super::{
+        entities::WorldEntity,
+        entity_projection::{ProjectComponent, project_all, project_entities},
+    },
+    types::BattleState,
+};
 use crate::spatial::is_mobile;
 use ra_types::EntityId;
 
@@ -22,88 +28,16 @@ impl BattleState {
 
     /// 将单个实体的全部 ECS 组件投影回 `WorldEntity`。
     pub(crate) fn project_entity_from_ecs(&mut self, id: EntityId) {
-        let Some(handle) = self.ecs.resolve(id)
-        else {
-            return;
-        };
         let Some(index) = self.entity_index(id)
         else {
             return;
         };
-        let identity = self.ecs.world().get::<crate::state::components::Identity>(handle).cloned();
-        let owner = self.ecs.world().get::<crate::state::components::Owner>(handle).cloned();
-        let health = self.ecs.world().get::<crate::state::components::Health>(handle).copied();
-        let transform = self.ecs.world().get::<crate::state::components::Transform>(handle).copied();
-        let loco = self.ecs.world().get::<crate::state::components::Locomotor>(handle).copied();
-        let movement = self.ecs.world().get::<crate::state::components::MovementState>(handle).cloned();
-        let stats = self.ecs.world().get::<crate::state::components::CombatStats>(handle).cloned();
-        let attack = self.ecs.world().get::<crate::state::components::AttackState>(handle).copied();
-        let queue = self.ecs.world().get::<crate::state::components::ProductionQueue>(handle).cloned();
-        let harvester = self.ecs.world().get::<crate::state::components::HarvesterState>(handle).copied();
-        let anim = self.ecs.world().get::<crate::state::components::AnimationState>(handle).copied();
+        self.project_entity_at(index);
+    }
 
-        let type_key = identity
-            .as_ref()
-            .and_then(|i| self.definitions.techno.get_by_id(i.type_id).map(|t| std::sync::Arc::<str>::from(t.type_key.as_str())));
-        let entity = &mut self.entities[index];
-        if let Some(identity) = identity {
-            if let Some(key) = type_key {
-                entity.type_id = key;
-            }
-            entity.kind = identity.kind;
-        }
-        if let Some(owner) = owner {
-            if let Some(key) = self.definitions.houses.get_by_id(owner.house).map(|h| std::sync::Arc::<str>::from(h.type_key.as_str())) {
-                entity.owner = key;
-            }
-        }
-        if let Some(health) = health {
-            entity.health = health.current;
-            entity.max_health = health.maximum;
-            entity.dead = health.dead;
-        }
-        if let Some(transform) = transform {
-            entity.x = transform.x;
-            entity.y = transform.y;
-            entity.facing = transform.facing;
-            entity.turret_facing = transform.turret_facing;
-            entity.sub_cell = transform.sub_cell;
-        }
-        if let Some(loco) = loco {
-            entity.speed = loco.speed;
-        }
-        if let Some(movement) = movement {
-            entity.target_x = movement.destination_x;
-            entity.target_y = movement.destination_y;
-            entity.path = movement.path;
-            entity.move_accum = movement.move_accum;
-        }
-        if let Some(stats) = stats {
-            entity.armor = stats.armor;
-            entity.attack_range = stats.attack_range;
-            entity.attack_damage = stats.attack_damage;
-            entity.attack_cooldown_max = stats.attack_cooldown_max;
-            entity.attack_verses = stats.attack_verses;
-            entity.techno_class = stats.techno_class;
-        }
-        if let Some(attack) = attack {
-            entity.attack_target = attack.target;
-            entity.attack_cooldown = attack.cooldown;
-        }
-        if let Some(queue) = queue {
-            entity.produce_queue = queue
-                .item
-                .and_then(|(tid, rem)| self.definitions.techno.get_by_id(tid).map(|t| (std::sync::Arc::<str>::from(t.type_key.as_str()), rem)));
-            entity.rally_x = queue.rally_x;
-            entity.rally_y = queue.rally_y;
-        }
-        if let Some(harvester) = harvester {
-            entity.ore_trip_accum = harvester.ore_trip_accum;
-        }
-        if let Some(anim) = anim {
-            entity.hva_frame = anim.hva_frame;
-            entity.hit_flash = anim.hit_flash;
-            entity.fire_flash = anim.fire_flash;
+    fn project_entity_at(&mut self, index: usize) {
+        if let Some(handle) = self.ecs.resolve(self.entities[index].id) {
+            project_all(self.ecs.world(), handle, &self.definitions, &mut self.entities[index]);
         }
     }
 
@@ -117,19 +51,23 @@ impl BattleState {
     ///
     /// 不再从 `WorldEntity` 回写 ECS，避免双真相。
     pub(crate) fn sync_ecs_components(&mut self) {
-        let ids: Vec<EntityId> = self.entities.iter().map(|e| e.id).collect();
-        for id in ids {
-            self.project_entity_from_ecs(id);
-        }
+        #[cfg(feature = "profiling")]
+        let _timer = crate::profiling::span(crate::profiling::Stage::EcsSync);
+        project_entities(&self.ecs, &self.definitions, &mut self.entities);
     }
 
-    fn with_component_mut<T: ra_ecs::Component, R>(&mut self, id: EntityId, f: impl FnOnce(&mut T) -> R) -> Option<R> {
+    fn with_component_mut<T: ProjectComponent, R>(&mut self, id: EntityId, f: impl FnOnce(&mut T) -> R) -> Option<R> {
+        #[cfg(feature = "profiling")]
+        let _timer = crate::profiling::span(T::PROFILE_STAGE);
         let handle = self.ecs.resolve(id)?;
-        let result = {
-            let component = self.ecs.world_mut().get_mut::<T>(handle)?;
-            f(component)
-        };
-        self.project_entity_from_ecs(id);
+        let index = self.entity_index(id);
+        let component = self.ecs.world_mut().get_mut::<T>(handle)?;
+        let result = f(component);
+        if let Some(index) = index {
+            #[cfg(feature = "profiling")]
+            let _projection_timer = crate::profiling::span(crate::profiling::Stage::PartialProjection);
+            component.project(&self.definitions, &mut self.entities[index]);
+        }
         Some(result)
     }
 
@@ -298,5 +236,70 @@ impl BattleState {
             }
         }
         self.rehash();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ra_map::MapInfo;
+    use ra_types::GameEdition;
+    use std::sync::Arc;
+
+    fn world() -> (BattleState, EntityId) {
+        let rules = b"[Countries]\n0=Americans\n1=Russians\n[Americans]\nSide=GDI\n[Russians]\nSide=Nod\n\
+            [VehicleTypes]\n0=MTNK\n1=HTNK\n[MTNK]\nStrength=400\nSpeed=64\n[HTNK]\nStrength=600\nSpeed=32\n";
+        let definitions = Arc::new(ra_adaptor::runtime_definitions_from_ini_bytes(GameEdition::Ra2, rules, None).unwrap());
+        let mut map = MapInfo::empty(GameEdition::Ra2, "projection-storage");
+        map.width = 16;
+        map.height = 16;
+        let mut world = BattleState::new(GameEdition::Ra2, definitions, map).unwrap();
+        let id = world.spawn_unit_at("Americans", "MTNK", 2, 3).unwrap();
+        (world, id)
+    }
+
+    #[test]
+    fn scalar_updates_and_full_sync_preserve_cached_string_and_path_storage() {
+        let (mut world, id) = world();
+        world
+            .with_movement_mut(id, |m| {
+                m.destination_x = Some(5);
+                m.destination_y = Some(3);
+                m.path = vec![(3, 3), (4, 3), (5, 3)];
+                m.waypoints = vec![(6, 3), (7, 3)];
+            })
+            .unwrap();
+        let owner = Arc::clone(&world.entities[0].owner);
+        let type_key = Arc::clone(&world.entities[0].type_id);
+        let path_storage = world.entities[0].path.as_ptr();
+        for tick in 0..100 {
+            world.with_animation_mut(id, |a| a.hva_frame = tick).unwrap();
+            world.with_attack_mut(id, |a| a.cooldown = u32::from(tick)).unwrap();
+            world.with_health_mut(id, |h| h.current = 400 - u32::from(tick)).unwrap();
+            world.sync_ecs_components();
+            let projection = &world.entities[0];
+            assert!(Arc::ptr_eq(&projection.owner, &owner));
+            assert!(Arc::ptr_eq(&projection.type_id, &type_key));
+            assert_eq!(projection.path.as_ptr(), path_storage);
+            assert_eq!(projection.path, vec![(3, 3), (4, 3), (5, 3)]);
+        }
+    }
+
+    #[test]
+    fn type_owner_and_production_changes_refresh_only_the_affected_cache() {
+        let (mut world, id) = world();
+        let target = world.definitions.techno.get("HTNK").unwrap().id;
+        let russian = world.definitions.houses.get("Russians").unwrap().id;
+        world.with_identity_mut(id, |i| i.type_id = target).unwrap();
+        world.with_owner_mut(id, |o| o.house = russian).unwrap();
+        world.with_production_mut(id, |q| q.item = Some((target, 20))).unwrap();
+        assert_eq!(world.entities[0].type_id.as_ref(), "HTNK");
+        assert_eq!(world.entities[0].owner.as_ref(), "RUSSIANS");
+        let queued_key = Arc::clone(&world.entities[0].produce_queue.as_ref().unwrap().0);
+        world.with_production_mut(id, |q| q.item = Some((target, 19))).unwrap();
+        assert!(Arc::ptr_eq(&world.entities[0].produce_queue.as_ref().unwrap().0, &queued_key));
+        assert_eq!(world.entities[0].produce_queue.as_ref().unwrap().1, 19);
+        world.with_production_mut(id, |q| q.clear_production()).unwrap();
+        assert!(world.entities[0].produce_queue.is_none());
     }
 }

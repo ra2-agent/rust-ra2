@@ -11,6 +11,8 @@ pub mod gameplay;
 mod lifecycle;
 mod persistence;
 mod presentation;
+#[cfg(feature = "profiling")]
+pub mod profiling;
 mod session;
 pub mod spatial;
 pub mod state;
@@ -27,7 +29,8 @@ pub use game::{
 };
 pub use gameplay::{
     AiTriggerRuntime, LightningStormState, SCRIPT_CRATE_CREDITS, SUPER_WEAPON_TICKS_PER_RECHARGE_UNIT, ScriptCrate, ScriptTeamRuntime,
-    TerrainSpawnerPhase, TerrainSpawnerState, TerrainSpawnerTick, TriggerRuntime, houses_are_allied, is_ambient_house, seed_terrain_spawners,
+    TerrainSpawnerPhase, TerrainSpawnerState, TerrainSpawnerTick, TriggerRuntime, candidate_npc_commands, candidate_variant_npc_commands,
+    hard_baseline_v1_commands, heuristic_ai_commands, houses_are_allied, is_ambient_house, reference_npc_commands, seed_terrain_spawners,
     start_lightning_storm, terrain_spawn_sample, terrain_spawner_frame_signature, tick_lightning_storm, tick_triggers,
 };
 pub use presentation::DirtyEntitySet;

@@ -21,6 +21,9 @@ pub struct PlayerState {
     pub power_drain: i32,
     /// 累计花费（建造与生产扣款之和，不含采矿收入）。
     pub funds_spent: i32,
+    /// 采矿卸货实际到账累计值；仅供观测，不参与游戏决策或状态哈希。
+    /// 初始资金、退款、出售和间谍转账均不计入。
+    pub harvested_credits: u64,
     /// 间谍渗透电厂后的断电剩余 tick；>0 时有效供电视为 0。
     pub power_blackout_ticks: u32,
     /// 渗透步兵厂后，新产步兵享受简易晋升级。
@@ -63,6 +66,7 @@ impl PlayerState {
             power_output: 0,
             power_drain: 0,
             funds_spent: 0,
+            harvested_credits: 0,
             power_blackout_ticks: 0,
             promoted_infantry: false,
             promoted_vehicle: false,

@@ -126,7 +126,7 @@ impl ProjectileDefinitions {
 
     /// 按键查找（大小写不敏感）。
     pub fn get(&self, type_key: &str) -> Option<&ProjectileDefinition> {
-        self.by_key.get(&ProjectileName::parse(type_key))
+        self.by_key.get(super::ini_string::lookup_upper(type_key).as_ref())
     }
 
     /// 按已规范化的抛射体键查找。

@@ -1,0 +1,770 @@
+[
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 9094045341461139646,
+      "seats": [
+        "easy-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 371,
+    "final_hash": "8b7c50e7a9c88cd9",
+    "submitted": [
+      34,
+      85
+    ],
+    "rejected": [
+      2,
+      4
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 9094045341461139646,
+      "seats": [
+        "hard-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 404,
+    "final_hash": "ebfec9c4cbbb01e3",
+    "submitted": [
+      92,
+      39
+    ],
+    "rejected": [
+      4,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 9470486766231111398,
+      "seats": [
+        "easy-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "5caaca9f71facc60",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 9470486766231111398,
+      "seats": [
+        "normal-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "5caaca9f71facc60",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 9592552252706221495,
+      "seats": [
+        "easy-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 1138,
+    "final_hash": "74f81b9bfca60f78",
+    "submitted": [
+      62,
+      54
+    ],
+    "rejected": [
+      2,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 9592552252706221495,
+      "seats": [
+        "normal-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 660,
+    "final_hash": "611593839e9a0cdc",
+    "submitted": [
+      50,
+      60
+    ],
+    "rejected": [
+      2,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 12270025419241524956,
+      "seats": [
+        "normal-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "15a411fe755acc60",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 12270025419241524956,
+      "seats": [
+        "hard-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "15a411fe755acc60",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 3752715396868486130,
+      "seats": [
+        "idle-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 198,
+    "final_hash": "b4787c0a5a652e6f",
+    "submitted": [
+      0,
+      19
+    ],
+    "rejected": [
+      0,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 3752715396868486130,
+      "seats": [
+        "normal-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 194,
+    "final_hash": "72e5f8dda9850bc6",
+    "submitted": [
+      19,
+      0
+    ],
+    "rejected": [
+      2,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 1910607418205583989,
+      "seats": [
+        "normal-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 378,
+    "final_hash": "cb66242cfcb66501",
+    "submitted": [
+      36,
+      81
+    ],
+    "rejected": [
+      2,
+      4
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 1910607418205583989,
+      "seats": [
+        "hard-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 533,
+    "final_hash": "3f2abe5e20457dfd",
+    "submitted": [
+      57,
+      66
+    ],
+    "rejected": [
+      4,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 9140336935745592861,
+      "seats": [
+        "idle-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 110,
+    "final_hash": "6070c4e04d92b78a",
+    "submitted": [
+      0,
+      6
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 9140336935745592861,
+      "seats": [
+        "hard-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 110,
+    "final_hash": "54626f9a36aade1f",
+    "submitted": [
+      6,
+      0
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 1723436047706647047,
+      "seats": [
+        "idle-v1",
+        "normal-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 110,
+    "final_hash": "715ca4f5dbc4b78a",
+    "submitted": [
+      0,
+      6
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 1723436047706647047,
+      "seats": [
+        "normal-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 110,
+    "final_hash": "c30c77c4a2b0de1f",
+    "submitted": [
+      6,
+      0
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 12708817412199463008,
+      "seats": [
+        "idle-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 115,
+    "final_hash": "9725a17b18a66acd",
+    "submitted": [
+      0,
+      6
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 12708817412199463008,
+      "seats": [
+        "easy-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 115,
+    "final_hash": "cb70ce46608da2ec",
+    "submitted": [
+      6,
+      0
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 17659533654446416872,
+      "seats": [
+        "easy-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "c53719ea82f78f5e",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "duel-v1",
+      "seed": 17659533654446416872,
+      "seats": [
+        "hard-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "draw",
+    "termination": "tick_limit",
+    "ticks": 3000,
+    "final_hash": "c53719ea82f78f5e",
+    "submitted": [
+      3,
+      3
+    ],
+    "rejected": [
+      0,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 1347604182271487641,
+      "seats": [
+        "idle-v1",
+        "hard-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 179,
+    "final_hash": "754150c4673a6433",
+    "submitted": [
+      0,
+      27
+    ],
+    "rejected": [
+      0,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 1347604182271487641,
+      "seats": [
+        "hard-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 176,
+    "final_hash": "ea9f4d4f703abc29",
+    "submitted": [
+      27,
+      0
+    ],
+    "rejected": [
+      2,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 11064657849904403925,
+      "seats": [
+        "idle-v1",
+        "easy-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "loss",
+    "termination": "elimination",
+    "ticks": 206,
+    "final_hash": "f5c7d5bfec2c84b8",
+    "submitted": [
+      0,
+      21
+    ],
+    "rejected": [
+      0,
+      2
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  },
+  {
+    "protocol": "ra-arena-full-info-v1",
+    "rules_hash": "beff78f5f46a111a",
+    "spec": {
+      "scenario": "skirmish-v1",
+      "seed": 11064657849904403925,
+      "seats": [
+        "easy-v1",
+        "idle-v1"
+      ],
+      "max_ticks": 3000,
+      "max_commands_per_tick": 64,
+      "trace": false
+    },
+    "score": "win",
+    "termination": "elimination",
+    "ticks": 202,
+    "final_hash": "c67e93c4ca2651d5",
+    "submitted": [
+      21,
+      0
+    ],
+    "rejected": [
+      2,
+      0
+    ],
+    "dropped": [
+      0,
+      0
+    ],
+    "frames": null
+  }
+]

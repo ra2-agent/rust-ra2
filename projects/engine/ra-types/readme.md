@@ -52,6 +52,8 @@ let defs = RuntimeDefinitions::default();
 assert_eq!(defs.content_fingerprint.hash, 0);
 ```
 
+定义表的字符串查询继续使用 trim + ASCII 大写语义。已规范化的键借用原字符串查询，只有含 ASCII 小写的输入需要生成大写副本，避免每 tick 重复创建 `HouseName` / `TechnoName` 等临时字符串。已绑定引用仍应优先使用稳定 ID。
+
 ## `GameEdition`
 
 ```rust

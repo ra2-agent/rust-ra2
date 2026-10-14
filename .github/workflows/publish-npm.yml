@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   build-native:
+    if: github.repository == 'rust-alert/ra2.exe'
     name: Native ${{ matrix.short }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -93,6 +94,7 @@ jobs:
           if-no-files-found: error
 
   publish:
+    if: github.repository == 'rust-alert/ra2.exe'
     name: Publish packages
     needs: build-native
     runs-on: ubuntu-latest

@@ -18,6 +18,10 @@ ra-map = { workspace = true }
 ra-net = { workspace = true }
 ra-ecs = { workspace = true }
 
+[features]
+# 只在显式启用时编译计时插桩；常规构建不访问时钟或 TLS。
+profiling = []
+
 [dev-dependencies]
 ra-adaptor = { workspace = true }
 ra-map = { workspace = true }

@@ -16,8 +16,8 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Aster <192607617@qq.com>"]
 license = "Apache-2.0"
-repository = "https://github.com/rust-alert/ra2.exe"
-homepage = "https://github.com/rust-alert/ra2.exe"
+repository = "https://github.com/ra2-agent/rust-ra2"
+homepage = "https://github.com/ra2-agent/rust-ra2"
 readme = "readme.md"
 
 [workspace.dependencies]
@@ -82,3 +82,10 @@ codegen-units = 1
 lto = true
 strip = "symbols"
 panic = "abort"
+
+# 策略迭代使用优化代码并保留增量编译，避免每次改函数都重新做全量 LTO。
+[profile.arena]
+inherits = "release"
+codegen-units = 16
+lto = false
+incremental = true

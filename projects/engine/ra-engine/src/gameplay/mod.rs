@@ -13,6 +13,7 @@ pub mod eva_advice;
 mod follow;
 mod infiltrate;
 mod movement;
+mod npc;
 pub mod powers;
 pub mod production;
 mod repair;
@@ -26,7 +27,7 @@ mod terrain_spawn_tick;
 mod transport;
 mod triggers;
 
-pub use ai::{houses_are_allied, is_ambient_house};
+pub use ai::{heuristic_ai_commands, houses_are_allied, is_ambient_house};
 pub use ai_triggers::AiTriggerRuntime;
 pub(crate) use ai_triggers::tick_ai_triggers;
 pub(crate) use definitions_query::{
@@ -35,7 +36,7 @@ pub(crate) use definitions_query::{
     is_refinery, owner_allows, required_houses_allows, requires_power_plant, starting_mcv_id_for_house, structure_is_defense,
     super_weapon_id_of, type_id_of, type_key_of,
 };
-pub(crate) use starting_units::{compose_starting_unit_ids, format_type_keys, starting_deploy_clearance, starting_unit_pools};
+pub use npc::{candidate_npc_commands, candidate_variant_npc_commands, hard_baseline_v1_commands, reference_npc_commands};
 pub use powers::{
     FireSuperWeaponError, LightningStormState, SUPER_WEAPON_TICKS_PER_RECHARGE_UNIT, SuperWeaponRuntime, start_lightning_storm,
     tick_lightning_storm, tick_super_weapon_charges, try_fire_super_weapon,
@@ -45,6 +46,7 @@ pub(crate) use repair::tick_repairs;
 pub(crate) use rules::{full_verses, verses_for};
 pub use script_teams::ScriptTeamRuntime;
 pub(crate) use script_teams::{flush_pending_team_spawns, tick_script_teams};
+pub(crate) use starting_units::{compose_starting_unit_ids, format_type_keys, starting_deploy_clearance, starting_unit_pools};
 pub(crate) use tech_tree::{TechTreePlayer, build_limit_reached, is_type_eligible_id, living_structure_keys};
 pub use terrain_spawn::{
     TerrainSpawnerPhase, TerrainSpawnerState, TerrainSpawnerTick, seed_terrain_spawners, terrain_spawn_sample, terrain_spawner_frame_signature,

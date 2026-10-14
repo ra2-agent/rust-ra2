@@ -11,6 +11,22 @@ fn rules_from(text: &[u8]) -> RulesSystem {
     rules_from_with_art(text, b"")
 }
 
+#[test]
+fn frozen_type_ids_are_independent_of_hashmap_and_declaration_order() {
+    let sections = b"[AAA]\nStrength=100\n[ZZZ]\nStrength=200\n";
+    let mut first_bytes = b"[VehicleTypes]\n0=ZZZ\n1=AAA\n".to_vec();
+    first_bytes.extend_from_slice(sections);
+    let mut second_bytes = b"[VehicleTypes]\n0=AAA\n1=ZZZ\n".to_vec();
+    second_bytes.extend_from_slice(sections);
+    let first = build_runtime_definitions(&rules_from(&first_bytes)).expect("freeze");
+    let expected: Vec<_> = first.techno.iter().map(|t| (t.type_key.clone(), t.id)).collect();
+    for _ in 0..32 {
+        let next = build_runtime_definitions(&rules_from(&second_bytes)).expect("freeze");
+        let actual: Vec<_> = next.techno.iter().map(|t| (t.type_key.clone(), t.id)).collect();
+        assert_eq!(actual, expected);
+    }
+}
+
 fn rules_from_with_art(rules_text: &[u8], art_text: &[u8]) -> RulesSystem {
     let rules = IniDocument::parse(rules_text).expect("test rules ini");
     let art = if art_text.is_empty() { IniDocument::default() } else { IniDocument::parse(art_text).expect("test art ini") };

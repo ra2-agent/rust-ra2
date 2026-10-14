@@ -1,0 +1,19 @@
+{
+  "npcs": ["idle-v1", "easy-v1", "normal-v1", "hard-v1"],
+  "scenarios": ["duel-v1", "skirmish-v1"],
+  "rounds": 10,
+  "seed": 42,
+  "max_ticks": 3000,
+  "max_commands_per_tick": 64,
+  "trace": false,
+  "jobs": 4,
+  "summary_only": true,
+  "profile": false,
+  "profile_sample_every": 1,
+  "elo": {
+    "initial": 1500.0,
+    "k": 32.0,
+    "scale": 400.0,
+    "provisional_games": 20
+  }
+}

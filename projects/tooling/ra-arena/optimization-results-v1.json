@@ -1,0 +1,389 @@
+{
+    "date": "2026-10-14",
+    "protocol": "ra-arena-full-info-v1",
+    "metrics_version": "npc-metrics-v1",
+    "rules_hash": "c7f7f73485be993d",
+    "candidate_sha256": "aba99819dbfbd0672e0c665e69892ca8b12b03967e4865e51a2bbc62342ac6d2",
+    "validation_binary_sha256": "59562ebefd947a2d6b168f126dabcabc03f4bd225b37fc0b3bed16cb905fe7d4",
+    "training_seeds": [42, 137],
+    "tested_variants": 41,
+    "training_games": 17460,
+    "holdout_seeds": [20261014, 8675309, 314159],
+    "holdout_games": 5400,
+    "total_experiment_games": 22860,
+    "candidate": {
+        "games": 1800,
+        "wins": 1136,
+        "draws": 300,
+        "losses": 364,
+        "score_rate": 0.7144444444444444
+    },
+    "by_opponent": {
+        "hard-baseline-v1": {
+            "games": 360,
+            "wins": 360,
+            "draws": 0,
+            "losses": 0,
+            "score_rate": 1
+        },
+        "reference-v4": {
+            "games": 360,
+            "wins": 240,
+            "draws": 60,
+            "losses": 60,
+            "score_rate": 0.75
+        },
+        "reference-v5": {
+            "games": 360,
+            "wins": 236,
+            "draws": 60,
+            "losses": 64,
+            "score_rate": 0.7388888888888889
+        },
+        "reference-v7": {
+            "games": 360,
+            "wins": 120,
+            "draws": 120,
+            "losses": 120,
+            "score_rate": 0.5
+        },
+        "counter-retreat-v1": {
+            "games": 360,
+            "wins": 180,
+            "draws": 60,
+            "losses": 120,
+            "score_rate": 0.5833333333333334
+        }
+    },
+    "by_scenario": {
+        "duel-v1": {
+            "games": 600,
+            "wins": 180,
+            "draws": 300,
+            "losses": 120,
+            "score_rate": 0.55,
+            "metrics": {
+                "games": 600,
+                "ticks": 955853,
+                "harvested_credits": 0,
+                "opening_harvested": 0,
+                "opening_ticks": 325853,
+                "spent": 0,
+                "final_funds": 0,
+                "battle_score": 10500,
+                "kills": 1860,
+                "losses": 1620,
+                "built": 0,
+                "income_games": 0,
+                "first_income_ticks": 0,
+                "refinery_games": 0,
+                "first_refinery_ticks": 0,
+                "low_power_ticks": 0,
+                "submitted": 18360,
+                "rejected": 0,
+                "dropped": 0,
+                "income_per_game_minute": 0,
+                "opening_income_per_game_minute": 0,
+                "first_income_seconds": null,
+                "average_battle_score": 17.5,
+                "rejected_pct": 0
+            }
+        },
+        "skirmish-v1": {
+            "games": 600,
+            "wins": 480,
+            "draws": 0,
+            "losses": 120,
+            "score_rate": 0.8,
+            "metrics": {
+                "games": 600,
+                "ticks": 262916,
+                "harvested_credits": 0,
+                "opening_harvested": 0,
+                "opening_ticks": 260234,
+                "spent": 5940000,
+                "final_funds": 60000,
+                "battle_score": 121970,
+                "kills": 8921,
+                "losses": 5328,
+                "built": 9600,
+                "income_games": 0,
+                "first_income_ticks": 0,
+                "refinery_games": 600,
+                "first_refinery_ticks": 25800,
+                "low_power_ticks": 5415,
+                "submitted": 115947,
+                "rejected": 0,
+                "dropped": 0,
+                "income_per_game_minute": 0,
+                "opening_income_per_game_minute": 0,
+                "first_income_seconds": null,
+                "average_battle_score": 203.28333333333333,
+                "rejected_pct": 0
+            }
+        },
+        "economy-v1": {
+            "games": 600,
+            "wins": 476,
+            "draws": 0,
+            "losses": 124,
+            "score_rate": 0.7933333333333333,
+            "metrics": {
+                "games": 600,
+                "ticks": 261699,
+                "harvested_credits": 5008500,
+                "opening_harvested": 5003600,
+                "opening_ticks": 261407,
+                "spent": 10802000,
+                "final_funds": 206500,
+                "battle_score": 223070,
+                "kills": 15968,
+                "losses": 8926,
+                "built": 19717,
+                "income_games": 600,
+                "first_income_ticks": 44400,
+                "refinery_games": 600,
+                "first_refinery_ticks": 25800,
+                "low_power_ticks": 1296,
+                "submitted": 309074,
+                "rejected": 189,
+                "dropped": 0,
+                "income_per_game_minute": 17224.559513028325,
+                "opening_income_per_game_minute": 17226.929653758314,
+                "first_income_seconds": 4.933333333333334,
+                "average_battle_score": 371.78333333333336,
+                "rejected_pct": 0.061150404110342504
+            }
+        }
+    },
+    "ratings_by_seed": [
+        {
+            "seed": 20261014,
+            "candidate": {
+                "npc": "candidate",
+                "elo": 1707.7468687509736,
+                "wins": 379,
+                "draws": 100,
+                "losses": 121
+            },
+            "original": {
+                "npc": "hard-baseline-v1",
+                "elo": 884.3177438580591,
+                "wins": 0,
+                "draws": 0,
+                "losses": 600
+            }
+        },
+        {
+            "seed": 8675309,
+            "candidate": {
+                "npc": "candidate",
+                "elo": 1702.0595822351409,
+                "wins": 379,
+                "draws": 100,
+                "losses": 121
+            },
+            "original": {
+                "npc": "hard-baseline-v1",
+                "elo": 884.8647283548318,
+                "wins": 0,
+                "draws": 0,
+                "losses": 600
+            }
+        },
+        {
+            "seed": 314159,
+            "candidate": {
+                "npc": "candidate",
+                "elo": 1708.0953424178754,
+                "wins": 378,
+                "draws": 100,
+                "losses": 122
+            },
+            "original": {
+                "npc": "hard-baseline-v1",
+                "elo": 883.986942741991,
+                "wins": 0,
+                "draws": 0,
+                "losses": 600
+            }
+        }
+    ],
+    "plateau_challengers": [
+        {
+            "npc": "tune-health25",
+            "games": 48,
+            "wins": 11,
+            "draws": 8,
+            "losses": 29,
+            "score_rate": 0.3125
+        },
+        {
+            "npc": "tune-health75",
+            "games": 48,
+            "wins": 16,
+            "draws": 8,
+            "losses": 24,
+            "score_rate": 0.4166666666666667
+        },
+        {
+            "npc": "tune-final-early",
+            "games": 48,
+            "wins": 18,
+            "draws": 8,
+            "losses": 22,
+            "score_rate": 0.4583333333333333
+        },
+        {
+            "npc": "tune-final-queue2",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-cap16",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-cap64",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-forward2",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-forward6",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-reserve",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-micro10",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        },
+        {
+            "npc": "tune-final-hp",
+            "games": 48,
+            "wins": 16,
+            "draws": 16,
+            "losses": 16,
+            "score_rate": 0.5
+        }
+    ],
+    "raw_reports": [
+        {
+            "file": "00-original.json",
+            "sha256": "d45d05758c9f503cf9fe893db70e72fcbb832357a5596fdb1a727db7243c8eaa"
+        },
+        {
+            "file": "01-focus.json",
+            "sha256": "5c34ae6f67446504d9db68b186fa36147aa3013a53cf2dcc6669a875a1257705"
+        },
+        {
+            "file": "02-coordination.json",
+            "sha256": "a55170da7ad74338c90ab4c2da98b1de683669a69171c6fb244b9c095285fda8"
+        },
+        {
+            "file": "03-squads.json",
+            "sha256": "e8a650a114c3d655f2af2e2ce9349a3362d6cd6253b3a48e7401679e721c3f48"
+        },
+        {
+            "file": "04-production.json",
+            "sha256": "75a91ba75cca21dd415f717ce606c3c8b9fcb5132f5c6edbb50fdf4c90ae049c"
+        },
+        {
+            "file": "05-mining.json",
+            "sha256": "1a30e4c99563c49550a9edaf81e34970b5e6f64d2cda5dacc6b1d7efeb1461de"
+        },
+        {
+            "file": "06-sweep-137.json",
+            "sha256": "3bb04d01c3c6afdbeb059a37311e97fa0f46c9e086f71f0479495666e2612aca"
+        },
+        {
+            "file": "06-sweep-42.json",
+            "sha256": "2aa9c24cff2f3b6d6c58b9eb1f2a4faf9fe8e0f92904118503a53613a24ef72f"
+        },
+        {
+            "file": "07-tactics-137.json",
+            "sha256": "ba167a22da2105df1372eb90c20df0cf567dc5d658062c710241489c2ada0de9"
+        },
+        {
+            "file": "07-tactics-42.json",
+            "sha256": "1f5e652470ed6fe50e721f2e49206df07322b5f9a70ef31b7844213819b329b3"
+        },
+        {
+            "file": "08-combinations-137.json",
+            "sha256": "74116c0e080e57ccae15a68b0a20f22189f574182bc0965eb6306ff7716d758a"
+        },
+        {
+            "file": "08-combinations-42.json",
+            "sha256": "cb474584a7a9168fad71398712e6737f49b09805c053f6d08f0d9d59dfaeed51"
+        },
+        {
+            "file": "09-adaptive-137.json",
+            "sha256": "94f3972e1c8c3bcf9520c0be2ac7d36961dc3d8b39f14b582d958b101a5d0b5e"
+        },
+        {
+            "file": "09-adaptive-42.json",
+            "sha256": "0703c6482ca53231dfd1929d9b00d705779caaa847c1a1924ad4b2bcf286c635"
+        },
+        {
+            "file": "10-neighborhood-137.json",
+            "sha256": "b5146ddaab04671fd0142f478b8c9ce9e7361f2547790bf1144840233bf85671"
+        },
+        {
+            "file": "10-neighborhood-42.json",
+            "sha256": "d923e05351c92de68dcecfb75cfad122ae3a9ce32d63aa03388bd25e8929f7aa"
+        },
+        {
+            "file": "11-plateau-137.json",
+            "sha256": "0b8399670028841f125ba6514620d79e59e3026ebc68938e98d98944e437de4a"
+        },
+        {
+            "file": "11-plateau-42.json",
+            "sha256": "3f992197cc64691225f65bcf67f4c7c1f7fec18a2199e9d306d618833c6c0b5a"
+        },
+        {
+            "file": "holdout-20261014.json",
+            "sha256": "08c2c375376e94fbcb59cc23a122e755a74cb3dbd9e397dbf6d1145f95176e18"
+        },
+        {
+            "file": "holdout-8675309.json",
+            "sha256": "0536abcd537c1dd83c8caee55041594790f4b74cedc5917bc0f9521383bc2e40"
+        },
+        {
+            "file": "holdout-314159.json",
+            "sha256": "f8c2cc122b767e3b92c30114de254ec480f779d53d31ef8bba12d9275e3b5639"
+        }
+    ],
+    "limits": "全图信息、Rust 合成规则、三类对称场景；新种子仍可能覆盖已见地图几何。局部瓶颈不代表原版 RA2 最优或统计显著性。"
+}

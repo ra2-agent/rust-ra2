@@ -1,0 +1,33 @@
+name: NPC evaluation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npc-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Resolve workspace lockfile
+        run: cargo metadata --locked --format-version 1 --no-deps
+      - name: Regression, mirrored league and replay verification
+        run: node scripts/npc-test.mjs
+      - name: Save reports, source snapshot and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npc-evaluation
+          path: arena-results/npc/
+          retention-days: 7

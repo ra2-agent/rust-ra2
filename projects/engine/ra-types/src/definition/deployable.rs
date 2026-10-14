@@ -50,7 +50,8 @@ impl DeployableDefinitions {
 
     /// 按源类型键查找（大小写不敏感）。
     pub fn get(&self, source_key: &str) -> Option<&DeployableDefinition> {
-        self.get_name(&TechnoName::parse(source_key))
+        let id = self.by_source_key.get(super::ini_string::lookup_upper(source_key).as_ref())?;
+        self.by_source_id.get(id)
     }
 
     /// 按已规范化的源类型键查找。

@@ -166,12 +166,7 @@ impl ProductionQueue {
 
     /// 建造场对应轨是否占用中（在产或待落位）。
     pub fn structure_track_busy(&self, defense: bool) -> bool {
-        if defense {
-            self.defense_item.is_some() || self.defense_ready.is_some()
-        }
-        else {
-            self.item.is_some() || self.ready.is_some()
-        }
+        if defense { self.defense_item.is_some() || self.defense_ready.is_some() } else { self.item.is_some() || self.ready.is_some() }
     }
 
     /// 任一槽位是否持有该类型（在产 / 待落位 / 候补）。

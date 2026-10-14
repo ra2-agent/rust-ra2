@@ -1,0 +1,15 @@
+{
+    "id": "hard-baseline-v1",
+    "captured_on": "2026-10-14",
+    "source_revision": "c61fbf2105ae6d741b2e0e324de9fd06de3013e9",
+    "source_kind": "working-tree",
+    "copied_from": ["projects/engine/ra-engine/src/gameplay/ai.rs", "projects/engine/ra-engine/src/game/ai.rs"],
+    "note": "Executable copy freezes AI strategy and difficulty helpers; shared engine mechanics remain versioned separately.",
+    "files": {
+        "projects/engine/ra-engine/src/gameplay/npc/hard_v1.rs": "4c294aa114112409b13337f04e8a2482dadd3af70b1d9bb5b84654c72f7c3b06",
+        "projects/tooling/ra-arena/baselines/hard-v1/source/ai_triggers.rs": "7e901b5d15936c4db0fa9a47a27ea3a95106247d34ebae778ecad1f55504cbe4",
+        "projects/tooling/ra-arena/baselines/hard-v1/source/difficulty_driver.rs": "24c2e7c4a784544b2f9708b4913966eab3ea4d61cb037447743f5eadb28c5d25",
+        "projects/tooling/ra-arena/baselines/hard-v1/source/heuristic_ai.rs": "611a2fc7060819db8701f4132d185b8aff690481a6c31384cfe33f2b975584f9",
+        "projects/tooling/ra-arena/baselines/hard-v1/source/script_teams.rs": "8d99246df07f014d625687ecb104ceeb08a6ca23b5e1930e566d5a3b325cba37"
+    }
+}

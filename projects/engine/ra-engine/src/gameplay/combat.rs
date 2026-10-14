@@ -10,12 +10,12 @@ use crate::{
         components::{AnimationState, AttackState, CombatStats, Health, Identity, Transform},
     },
 };
-use ra_types::ArmorKind;
+use ra_types::{ArmorKind, HouseId};
 
 impl crate::state::BattleState {
     pub(crate) fn resolve_combat(&mut self) {
         let n = self.entities.len();
-        let mut damage_events: Vec<(std::sync::Arc<str>, usize, u32)> = Vec::new();
+        let mut damage_events: Vec<(HouseId, usize, u32)> = Vec::new();
         for i in 0..n {
             let attacker_id = self.entities[i].id;
             let Some(health) = self.ecs_get::<Health>(attacker_id)
@@ -32,9 +32,7 @@ impl crate::state::BattleState {
             if !is_mobile(identity.kind) {
                 continue;
             }
-            let Some(attacker_house) = self
-                .ecs_get::<crate::state::components::Owner>(attacker_id)
-                .map(|o| std::sync::Arc::<str>::from(crate::gameplay::house_key_of(&self.definitions, o.house)))
+            let Some(attacker_house) = self.ecs_get::<crate::state::components::Owner>(attacker_id).map(|o| o.house)
             else {
                 continue;
             };
@@ -143,8 +141,11 @@ impl crate::state::BattleState {
                 }
             }
         }
-        for (killer_house, ti, dmg) in damage_events {
-            self.apply_damage_credited(ti, dmg, Some(killer_house.as_ref()));
+        if !damage_events.is_empty() {
+            let definitions = std::sync::Arc::clone(&self.definitions);
+            for (killer_house, ti, dmg) in damage_events {
+                self.apply_damage_credited(ti, dmg, Some(crate::gameplay::house_key_of(&definitions, killer_house)));
+            }
         }
     }
 
@@ -184,7 +185,7 @@ impl crate::state::BattleState {
         if self.ecs_get::<Health>(from).map(|h| h.dead).unwrap_or(true) {
             return None;
         }
-        let owner = crate::gameplay::house_key_of(&self.definitions, self.ecs_get::<crate::state::components::Owner>(from)?.house).to_string();
+        let owner = crate::gameplay::house_key_of(&self.definitions, self.ecs_get::<crate::state::components::Owner>(from)?.house);
         let xf = self.ecs_get::<Transform>(from).copied()?;
         self.entities
             .iter()

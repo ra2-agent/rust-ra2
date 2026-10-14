@@ -219,7 +219,7 @@ impl HouseDefinitions {
 
     /// 按外部键查找（大小写不敏感）。
     pub fn get(&self, type_key: &str) -> Option<&HouseDefinition> {
-        self.by_key.get(&HouseName::parse(type_key))
+        self.by_key.get(super::ini_string::lookup_upper(type_key).as_ref())
     }
 
     /// 按已规范化的房屋键查找。
@@ -263,7 +263,7 @@ impl StructureDefinitions {
 
     /// 按外部类型键查找（大小写不敏感）。
     pub fn get(&self, type_key: &str) -> Option<&StructureDefinition> {
-        self.by_key.get(&TechnoName::parse(type_key))
+        self.by_key.get(super::ini_string::lookup_upper(type_key).as_ref())
     }
 
     /// 按已规范化的类型键查找。
